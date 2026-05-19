@@ -39,8 +39,8 @@ APP_DIR: Path = ROOT_DIR / "apps" / "platform"
 
 # 共享资产(ROOT_DIR下，所有端都可以访问的文件)
 DATA_DIR: Path = ROOT_DIR / "data"
-MODELS_DIR: Path = DATA_DIR / "models"
-RUNS_DIR : Path = DATA_DIR / "runs"
+MODELS_DIR: Path = ROOT_DIR / "models"
+RUNS_DIR : Path = ROOT_DIR / "runs"
 
 # 模型有子目录
 PRETRAINED_MODELS_DIR: Path = MODELS_DIR / "pretrained"

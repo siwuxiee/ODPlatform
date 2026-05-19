@@ -1,0 +1,49 @@
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:139 - get_logger - ============================================================
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:140 - get_logger - 日志系统初始化完成
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:141 - get_logger - 运行环境: Linux 6.17.0-29-generic
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:142 - get_logger - 阶段类型: init_project
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:143 - get_logger - 日志文件: /home/siwuxie/Projects/ODPlatform/apps/platform/logging/init_project/init-project_20260519-144234-06783.log
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:144 - get_logger - 日志级别: INFO
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:145 - get_logger - 模型名称: 无
+2026-05-19 14:42:34 - odp_platform - INFO     - logging_utils.py:146 - get_logger - ============================================================
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:34 - initialize_project - ========================开始初始化项目核心目录=========================
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:35 - initialize_project - 项目的根目录: /home/siwuxie/Projects/ODPlatform
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: models
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: runs
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: models/pretrained
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: models/checkpoints
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/raw
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/train/images
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/test/images
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/valid/images
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/train/labels
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/test/labels
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:48 - initialize_project - 成功创建目录: data/valid/labels
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:43 - initialize_project - 目录已经存在: apps/platform/configs
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:43 - initialize_project - 目录已经存在: apps/platform/logging
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:43 - initialize_project - 目录已经存在: apps/platform/tests
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:43 - initialize_project - 目录已经存在: scripts
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:43 - initialize_project - 目录已经存在: docs
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:57 - initialize_project - ========================项目核心目录初始化完成=========================
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:65 - initialize_project - 目录 (Directory)                         状态 (Status)
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:69 - initialize_project - ---------------------------------------------------
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data                                           新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - models                                         新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - runs                                           新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - models/pretrained                              新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - models/checkpoints                             新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/raw                                       新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/train/images                              新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/test/images                               新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/valid/images                              新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/train/labels                              新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/test/labels                               新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:74 - initialize_project - data/valid/labels                              新建
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:78 - initialize_project - apps/platform/configs                        已存在
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:78 - initialize_project - apps/platform/logging                        已存在
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:78 - initialize_project - apps/platform/tests                          已存在
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:78 - initialize_project - scripts                                      已存在
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:78 - initialize_project - docs                                         已存在
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - init_project.py:80 - initialize_project - ============================================================
+2026-05-19 14:42:34 - odp_platform.cli.init_project - INFO     - performance_utils.py:65 - wrapper - 性能报告: [项目初始化] 执行耗时 4.647 毫秒
