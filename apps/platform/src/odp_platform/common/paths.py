@@ -35,7 +35,7 @@ def _find_workspace_root(
 ROOT_DIR: Path = _find_workspace_root(Path(__file__))
 
 # 端代码目录APP_DIR(platform这个根)
-APP_DIR: Path = ROOT_DIR / "platform"
+APP_DIR: Path = ROOT_DIR / "apps" / "platform"
 
 # 共享资产(ROOT_DIR下，所有端都可以访问的文件)
 DATA_DIR: Path = ROOT_DIR / "data"
