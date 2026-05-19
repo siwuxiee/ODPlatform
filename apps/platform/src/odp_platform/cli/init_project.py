@@ -14,10 +14,12 @@ from odp_platform.common.paths import ROOT_DIR, LOGGING_DIR, get_dirs_to_initial
 from odp_platform.common.logging_utils import get_logger
 # 【新增导入】引入你刚写的字符串排版工具
 from odp_platform.common.string_utils import format_table_row, format_table_separator
+from odp_platform.common.performance_utils import time_it
 
 LINE_WIDTH = 80
 logger = logging.getLogger(__name__)
 
+@time_it(iterations=1, name="项目初始化", logger_instance=logger)
 def initialize_project() -> None:
     """
     初始化项目，创建所有必要的目录
