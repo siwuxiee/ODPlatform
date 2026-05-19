@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.class
+.venv/
+venv/
+
+# 你们项目特有的忽略项
+data/
+models/
+runs/
+logs/
+.idea/
+.vscode/
