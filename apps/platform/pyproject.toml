@@ -1,0 +1,50 @@
+# ODPlatform -platform端配置
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "odp-platform"
+dynamic = ['version']  # 动态版本从_version.py
+description = "ODPlatform - 目标检测开发平台核心引擎"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "ODPlatform Team", email = "sx12101184@qq.com"}
+]
+keywords = ["ODPlatform", "OD", "目标检测", "目标检测开发平台", "目标检测开发平台核心引擎"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "colorlog >= 6.7.0",
+    "pyyaml >= 6.0",
+    "pydantic >= 2.4.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest >= 7.4.0",
+    "pytest-cov >= 4.1.0",
+    "ruff >= 0.1.0",
+    "mypy >= 1.5.0"
+]
+
+[project.scripts]
+odp-init = "odp_platfrom.cli.init_project:initialize_project"
+
+# Hatchlinng配置
+[tool.hatch.build.targets.wheel]
+package = ["src/odp_platfrom"]
+
+[tool.hatch.version]
+path = "src/odp_platform/_version.py"
