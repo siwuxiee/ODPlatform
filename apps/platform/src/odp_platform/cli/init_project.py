@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # @FileName  :init_project.py
 # @Time      :2026/5/18 11:34:37
-# @Author    :雨霓同学
+# @Author    :siwuxiee
 # @Project   :ODPlatform
 # @Function  :
 
