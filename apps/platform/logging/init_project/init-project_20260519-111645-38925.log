@@ -1,0 +1,8 @@
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:139 - get_logger - ============================================================
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:140 - get_logger - 日志系统初始化完成
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:141 - get_logger - 运行环境: Linux 6.17.0-29-generic
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:142 - get_logger - 阶段类型: init_project
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:143 - get_logger - 日志文件: /home/siwuxie/Projects/ODPlatform/apps/platform/logging/init_project/init-project_20260519-111645-38925.log
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:144 - get_logger - 日志级别: INFO
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:145 - get_logger - 模型名称: 无
+2026-05-19 11:16:45 - odp_platform - INFO     - logging_utils.py:146 - get_logger - ============================================================
