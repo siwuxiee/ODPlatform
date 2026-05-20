@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # @FileName  :paths.py
 # @Time      :2026/5/18 11:53:15
-# @Author    :siwuxiee
+# @Author    :雨霓同学
 # @Project   :ODPlatform
 # @Function  :
 from pathlib import Path
@@ -51,7 +51,7 @@ RAW_DATA_DIR: Path = DATA_DIR / "raw"
 
 TRAIN_DIR : Path = DATA_DIR / "train"
 TEST_DIR : Path = DATA_DIR / "test"
-VAL_DIR : Path = DATA_DIR / "valid"
+VAL_DIR : Path = DATA_DIR / "val"
 
 TRAIN_IMAGES_DIR: Path = TRAIN_DIR / "images"
 TEST_IMAGES_DIR: Path = TEST_DIR / "images"
@@ -72,6 +72,11 @@ DOCS_DIR: Path = ROOT_DIR / "docs"
 # 工程基础设施目录
 SCRIPTS_DIR: Path = ROOT_DIR / "scripts"
 
+# ==========================
+# 定义工具的元目录数据， 工具自身的日志
+# ========================
+META_DIR: Path = ROOT_DIR / ".odp-meta"
+META_LOGGING_DIR: Path = META_DIR / "logs"
 
 # 对外暴露的要初始化的目录列表
 def get_dirs_to_initialize() -> List[Path]:
@@ -97,7 +102,61 @@ def get_dirs_to_initialize() -> List[Path]:
         UNIT_TEST_DIR,
         SCRIPTS_DIR,
         DOCS_DIR,
+        META_LOGGING_DIR
     ]
+
+def get_dirs_to_reset() -> List[Path]:
+    """
+    返回项目启动时需要确保存在的所有目录列表
+    :return: 所有需要初始化的目录路径列表
+    """
+    return [
+        # 划分后的数据集
+        TRAIN_DIR, VAL_DIR, TEST_DIR,
+        # 训练的产物
+        RUNS_DIR, CHECKPOINTS_DIR,
+        # 端私有资产
+        LOGGING_DIR,
+    ]
+
+
+# =============================================
+# reset工具 永远不能删除的目录
+# ============================================
+PROTECTED_DIRS: tuple[Path, ...] = (
+    ROOT_DIR,
+    ROOT_DIR / "apps",
+    ROOT_DIR / "packages",
+    APP_DIR,
+    APP_DIR / "src",
+    SCRIPTS_DIR,
+    DOCS_DIR,
+    UNIT_TEST_DIR,
+    CONFIGS_DIR,
+    ROOT_DIR / ".git",
+    ROOT_DIR / ".odp-workspace",
+    META_DIR,
+    META_LOGGING_DIR,
+)
+
+def is_protected(path: Path) -> bool:
+    """
+    检查路径是否再保护清单中
+    - 路径是不是 受保护目录本身
+    - 路径是不是 受保护目录的祖先，因为删了祖先会把后代都删了
+    """
+    path = path.resolve(strict=False)
+    for protected in PROTECTED_DIRS:
+        protected_resolved = protected.resolve(strict=False)
+        if path == protected_resolved:
+            return True
+        if protected_resolved.is_relative_to(path):
+            return True
+    return False
+
+
+
+
 
 if __name__ == "__main__":
     print(f"ROOT_DIR (workspace) = {ROOT_DIR}")
