@@ -78,6 +78,11 @@ SCRIPTS_DIR: Path = ROOT_DIR / "scripts"
 META_DIR: Path = ROOT_DIR / ".odp-meta"
 META_LOGGING_DIR: Path = META_DIR / "logs"
 
+# --- D3 新增：数据集与配置相关路径 ---
+DATA_RAW_DIR: Path = DATA_DIR / "raw"
+DATA_PROCESSED_DIR: Path = DATA_DIR / "processed"
+CONFIG_DATASETS_DIR: Path = CONFIGS_DIR / "datasets"
+
 # 对外暴露的要初始化的目录列表
 def get_dirs_to_initialize() -> List[Path]:
     """
@@ -102,7 +107,10 @@ def get_dirs_to_initialize() -> List[Path]:
         UNIT_TEST_DIR,
         SCRIPTS_DIR,
         DOCS_DIR,
-        META_LOGGING_DIR
+        META_LOGGING_DIR,
+        DATA_RAW_DIR,
+        DATA_PROCESSED_DIR,
+        CONFIG_DATASETS_DIR,
     ]
 
 def get_dirs_to_reset() -> List[Path]:
