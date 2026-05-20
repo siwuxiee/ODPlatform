@@ -13,7 +13,7 @@ from odp_platform.common.logging_utils import get_logger
 
 get_logger(
     base_path=LOGGING_DIR,
-    log_type="",   # 日志目录：logging/transform/
+    log_type="transform",   # 日志目录：logging/transform/
     temp_log=False,
     log_level=logging.INFO,
 )
