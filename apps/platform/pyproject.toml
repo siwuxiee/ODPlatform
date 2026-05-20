@@ -42,6 +42,7 @@ dev = [
 [project.scripts]
 odp-init = "odp_platform.cli.init_project:initialize_project"
 odp-reset = "odp_platform.cli.reset_project:main"
+odp-transform = "odp_platform.cli.transform_data:main"
 
 
 # Hatchlinng配置
