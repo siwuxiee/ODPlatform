@@ -7,9 +7,11 @@ from typing import Optional, List, Dict, Tuple, Type, Any
 class ConvertOptions:
     """
     转换选项。
-    classes: 若为 None，表示自动从数据集中推断类别；若提供 List[str]，则按提供的类别过滤/排序。
+    - classes: 若为 None，表示自动从数据集中推断类别；若提供 List[str]，则按提供的类别过滤/排序。
+    - task: 目标任务类型，'detect' 或 'segment'。COCO 等格式需要此字段来决定生成哪种标注格式。
     """
     classes: Optional[List[str]] = None
+    task: str = "detect"
 
 # 注册表字典：格式名称 -> (支持的任务元组, 转换器类)
 _REGISTRY: Dict[str, Tuple[Tuple[str, ...], Type[Any]]] = {}
