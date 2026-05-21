@@ -6,6 +6,8 @@ import argparse
 import sys
 import logging
 from pathlib import Path
+import tempfile            # 新增引入
+import contextlib          # 新增引入
 
 # ── 日志初始化（必须在其他 ODP 导入之前，确保根 logger 最先装配） ─
 from odp_platform.common.paths import LOGGING_DIR
@@ -52,46 +54,51 @@ def main():
         print(f"错误：原始数据集目录不存在：{raw_dir}", file=sys.stderr)
         sys.exit(1)
 
-    base_out = (
-        Path(args.output_dir)
-        if args.output_dir
-        else Path("data/datasets") / dataset_name / "converted"
-    )
-    output_images = base_out / "images"
-    output_labels = base_out / "labels"
+    # 替换原本的 base_out 定义逻辑：
+    with contextlib.ExitStack() as stack:
+        if args.output_dir:
+            # 如果用户明确指定了保存中间产物的目录，则使用用户的路径
+            base_out = Path(args.output_dir)
+        else:
+            # 如果没有指定，则开启一个用完即焚的系统临时目录，避免生成 datasets 文件夹
+            temp_dir = stack.enter_context(tempfile.TemporaryDirectory())
+            base_out = Path(temp_dir)
 
-    config_yaml = (
-        Path(args.config_dir)
-        if args.config_dir
-        else CONFIG_DATASETS_DIR / f"{dataset_name}.yaml"
-    )
+        output_images = base_out / "images"
+        output_labels = base_out / "labels"
 
-    classes_list = None
-    if args.classes:
-        classes_list = [c.strip() for c in args.classes.split(",") if c.strip()]
+        config_yaml = (
+            Path(args.config_dir)
+            if args.config_dir
+            else CONFIG_DATASETS_DIR / f"{dataset_name}.yaml"
+        )
 
-    orchestrator = Orchestrator(
-        dataset_name=dataset_name,
-        format_name=args.format,
-        raw_data_dir=raw_dir,
-        output_images_dir=output_images,
-        output_labels_dir=output_labels,
-        config_yaml_path=config_yaml,
-        train_ratio=args.train_ratio,
-        val_ratio=args.val_ratio,
-        test_ratio=args.test_ratio,
-        random_state=args.random_state,
-        user_classes=classes_list,
-        task=args.task,
-    )
+        classes_list = None
+        if args.classes:
+            classes_list = [c.strip() for c in args.classes.split(",") if c.strip()]
 
-    try:
-        orchestrator.run()
-    except Exception as e:
-        print(f"流水线执行失败：{e}", file=sys.stderr)
-        sys.exit(2)
+        orchestrator = Orchestrator(
+            dataset_name=dataset_name,
+            format_name=args.format,
+            raw_data_dir=raw_dir,
+            output_images_dir=output_images,
+            output_labels_dir=output_labels,
+            config_yaml_path=config_yaml,
+            train_ratio=args.train_ratio,
+            val_ratio=args.val_ratio,
+            test_ratio=args.test_ratio,
+            random_state=args.random_state,
+            user_classes=classes_list,
+            task=args.task,
+        )
 
-    print(f"成功！配置文件已生成：{config_yaml}")
+        try:
+            orchestrator.run()
+        except Exception as e:
+            print(f"流水线执行失败：{e}", file=sys.stderr)
+            sys.exit(2)
+
+        print(f"成功！配置文件已生成：{config_yaml}")
 
 
 def __build_capabilities_epilog() -> str:
