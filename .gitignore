@@ -12,3 +12,5 @@ runs/
 logs/
 .idea/
 .vscode/
+logging/
+configs/
