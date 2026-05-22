@@ -80,7 +80,7 @@ class DatasetSnapshot:
 
 
 @time_it(name="build_snapshot")
-def build_snapshot(yaml_path: Path) -> DatasetSnapshot:
+def build_snapshot(yaml_path: Path, task_type: Optional[str] = None) -> DatasetSnapshot:
     yaml_data: Dict[str, Any] = {}
     yaml_load_error: Optional[str] = None
 
@@ -121,9 +121,9 @@ def build_snapshot(yaml_path: Path) -> DatasetSnapshot:
         class_names = tuple(v for _, v in sorted_items)
 
     # --- task_type ---
-    task_type = yaml_data.get("task", Task.DETECT)
-    if task_type not in (Task.DETECT, Task.SEGMENT):
-        task_type = Task.DETECT
+    resolved_task_type = task_type or yaml_data.get("task", Task.DETECT)
+    if resolved_task_type not in (Task.DETECT, Task.SEGMENT):
+        resolved_task_type = Task.DETECT
 
     # --- scan splits ---
     warnings: List[str] = []
@@ -171,7 +171,7 @@ def build_snapshot(yaml_path: Path) -> DatasetSnapshot:
         data_root=data_root,
         nc=nc,
         class_names=class_names,
-        task_type=task_type,
+        task_type=resolved_task_type,
         images_per_split=images_per_split,
         labels_per_split=labels_per_split,
         stats_per_split=stats_per_split,
