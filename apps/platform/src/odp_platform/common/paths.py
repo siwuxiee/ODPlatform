@@ -83,6 +83,18 @@ DATA_RAW_DIR: Path = DATA_DIR / "raw"
 DATA_PROCESSED_DIR: Path = DATA_DIR / "processed"
 CONFIG_DATASETS_DIR: Path = CONFIGS_DIR / "datasets"
 
+# --- D4 新增：data_validation 相关路径 ---
+VALIDATION_RUNS_DIR: Path = RUNS_DIR / "data_validation"
+
+
+def validation_run_dir(run_id: str) -> Path:
+    return VALIDATION_RUNS_DIR / run_id
+
+
+def dataset_yaml_path(name: str) -> Path:
+    """根据数据集名称返回其配置 yaml 路径"""
+    return CONFIG_DATASETS_DIR / f"{name}.yaml"
+
 # 对外暴露的要初始化的目录列表
 def get_dirs_to_initialize() -> List[Path]:
     """
@@ -111,6 +123,7 @@ def get_dirs_to_initialize() -> List[Path]:
         DATA_RAW_DIR,
         DATA_PROCESSED_DIR,
         CONFIG_DATASETS_DIR,
+        VALIDATION_RUNS_DIR,
     ]
 
 def get_dirs_to_reset() -> List[Path]:
@@ -123,6 +136,8 @@ def get_dirs_to_reset() -> List[Path]:
         TRAIN_DIR, VAL_DIR, TEST_DIR,
         # 训练的产物
         RUNS_DIR, CHECKPOINTS_DIR,
+        # 验证报告
+        VALIDATION_RUNS_DIR,
         # 端私有资产
         LOGGING_DIR,
     ]
