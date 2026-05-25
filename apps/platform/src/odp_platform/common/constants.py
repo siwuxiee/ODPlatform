@@ -14,6 +14,11 @@ class Task:
     def choices(cls):
         return (cls.DETECT, cls.SEGMENT, cls.CLASSIFY)
 
+    @classmethod
+    def all(cls):
+        """D5 SSoT: 用于运行时配置的 task 字段 validator 封闭取值."""
+        return set(cls.choices())
+
 
 # 任务类型 (保留向后兼容的模块级常量)
 TASK_DETECT = Task.DETECT

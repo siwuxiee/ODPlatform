@@ -86,6 +86,11 @@ CONFIG_DATASETS_DIR: Path = CONFIGS_DIR / "datasets"
 # --- D4 新增：data_validation 相关路径 ---
 VALIDATION_RUNS_DIR: Path = RUNS_DIR / "data_validation"
 
+# --- D5 新增：运行配置目录 (跟 D3 立的 DATASET_CONFIGS_DIR 语义不同) ---
+# DATASET_CONFIGS_DIR: 描述【数据】的 yaml (odp-transform 产出)
+# RUNTIME_CONFIGS_DIR: 描述【跑法】的 yaml (runtime_config 子系统产出)
+RUNTIME_CONFIGS_DIR: Path = CONFIGS_DIR / "runtime"
+
 
 def validation_run_dir(run_id: str) -> Path:
     return VALIDATION_RUNS_DIR / run_id
@@ -94,6 +99,22 @@ def validation_run_dir(run_id: str) -> Path:
 def dataset_yaml_path(name: str) -> Path:
     """根据数据集名称返回其配置 yaml 路径"""
     return CONFIG_DATASETS_DIR / f"{name}.yaml"
+
+
+def runtime_config_path(name: str) -> Path:
+    """返回某个运行配置文件路径: <CONFIGS_DIR>/runtime/<name>.yaml
+
+    Args:
+        name: 配置名 (如 "train" / "val"), 不带 .yaml 后缀
+
+    Returns:
+        Path 对象
+
+    用法:
+        train_yaml = runtime_config_path("train")
+        # → <APP_DIR>/configs/runtime/train.yaml
+    """
+    return RUNTIME_CONFIGS_DIR / f"{name}.yaml"
 
 # 对外暴露的要初始化的目录列表
 def get_dirs_to_initialize() -> List[Path]:
@@ -124,6 +145,7 @@ def get_dirs_to_initialize() -> List[Path]:
         DATA_PROCESSED_DIR,
         CONFIG_DATASETS_DIR,
         VALIDATION_RUNS_DIR,
+        RUNTIME_CONFIGS_DIR,
     ]
 
 def get_dirs_to_reset() -> List[Path]:
