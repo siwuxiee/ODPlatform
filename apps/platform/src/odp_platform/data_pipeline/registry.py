@@ -1,7 +1,12 @@
 # apps/platform/src/odp_platform/data_pipeline/registry.py
 
+import importlib
+import logging
+import pkgutil
 from dataclasses import dataclass
 from typing import Optional, List, Dict, Tuple, Type, Any
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class ConvertOptions:
@@ -22,12 +27,26 @@ def _lazy_init():
     global _INITIALIZED
     if _INITIALIZED:
         return
-    
-    # 这里的模块在阶段 2, 3, 4 会依次创建，IDE 报错请忽略，不要注释！
-    import odp_platform.data_pipeline.core.pascal_voc
-    import odp_platform.data_pipeline.core.coco
-    import odp_platform.data_pipeline.core.yolo
-    
+
+    core_pkg_name = __package__ + ".core"
+
+    try:
+        core_pkg = importlib.import_module(core_pkg_name)
+    except ModuleNotFoundError:
+        logger.warning("Core package '%s' not found; no converters loaded.", core_pkg_name)
+        _INITIALIZED = True
+        return
+
+    for _, module_name, _ in pkgutil.iter_modules(
+        core_pkg.__path__, core_pkg.__name__ + "."
+    ):
+        if module_name.split(".")[-1].startswith("_"):
+            continue
+        try:
+            importlib.import_module(module_name)
+        except Exception:
+            logger.exception("Failed to import converter module '%s'", module_name)
+
     _INITIALIZED = True
 
 def register_converter(format_name: str, supported_tasks: Tuple[str, ...]):
