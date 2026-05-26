@@ -28,7 +28,7 @@ from ultralytics import YOLO
 
 from odp_platform.common.config_log import log_effective_config, log_override_chains
 from odp_platform.common.dataset_path import resolve_dataset_path
-from odp_platform.common.log_rename import rename_log_to_save_dir
+from odp_platform.common.log_rename import rename_log_to_save_dir, add_model_to_log_name
 from odp_platform.common.model_path import resolve_model_path
 from odp_platform.common.paths import RUNS_DIR
 from odp_platform.common.result import TrainMetrics, log_train_metrics
@@ -114,6 +114,10 @@ class TrainService:
             model_path = resolve_model_path(raw_model)
             logger.info(f"模型(解析):  {model_path}")
 
+            # 立刻把模型名写入日志文件名 — 即使后续训练失败也能识别这份日志属于哪个模型
+            model_stem = Path(raw_model).stem
+            add_model_to_log_name(model_stem)
+
             # D2 系统快照
             log_device_info(logger)
 
@@ -179,7 +183,6 @@ class TrainService:
             # ============================================================
             # 阶段 7: 整理输出 (rename_log 先, archive 后)
             # ============================================================
-            model_stem = Path(raw_model).stem
 
             # 7a. 改日志名跟 save_dir 对齐(归档动作也能进新文件名的日志)
             if rename_log:
