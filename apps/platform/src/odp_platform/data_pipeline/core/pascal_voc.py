@@ -35,13 +35,13 @@ class PascalVOCConverter:
         self.output_labels_dir = output_labels_dir
         self.options = options
 
-        self.annotations_dir = self.input_dir / "Annotations"
-        self.images_dir = self.input_dir / "JPEGImages"
+        self.annotations_dir = self.input_dir / "annotations"
+        self.images_dir = self.input_dir / "images"
 
         if not self.annotations_dir.is_dir():
-            raise FileNotFoundError(f"Annotations directory not found: {self.annotations_dir}")
+            raise FileNotFoundError(f"annotations directory not found: {self.annotations_dir}")
         if not self.images_dir.is_dir():
-            raise FileNotFoundError(f"JPEGImages directory not found: {self.images_dir}")
+            raise FileNotFoundError(f"images directory not found: {self.images_dir}")
 
         self.output_images_dir.mkdir(parents=True, exist_ok=True)
         self.output_labels_dir.mkdir(parents=True, exist_ok=True)

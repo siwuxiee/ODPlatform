@@ -217,7 +217,7 @@ class CocoConverter:
         candidates = [
             self.input_dir / "images",
             self.input_dir / "Images",
-            self.input_dir / "JPEGImages",
+            self.input_dir / "images",
             self.input_dir,
         ]
         for cand in candidates:

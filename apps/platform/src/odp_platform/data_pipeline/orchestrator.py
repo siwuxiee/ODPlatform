@@ -129,17 +129,17 @@ class Orchestrator:
     def _check_raw_coverage(self) -> None:
         """检查原始数据集标注覆盖率（fail-fast）"""
         if self.format_name == "pascal_voc":
-            ann_dir = self.raw_data_dir / "Annotations"
-            img_dir = self.raw_data_dir / "JPEGImages"
+            ann_dir = self.raw_data_dir / "annotations"
+            img_dir = self.raw_data_dir / "images"
             if not ann_dir.is_dir() or not img_dir.is_dir():
-                raise FileNotFoundError(f"Annotations/ or JPEGImages/ missing in {self.raw_data_dir}")
+                raise FileNotFoundError(f"annotations/ or images/ missing in {self.raw_data_dir}")
 
             xml_count = len(list(ann_dir.glob("*.xml")))
             img_exts = {".jpg", ".jpeg", ".png", ".bmp", ".tif", ".tiff"}
             img_count = sum(1 for f in img_dir.iterdir() if f.suffix.lower() in img_exts)
 
             if img_count == 0:
-                raise ValueError("No images found in JPEGImages/")
+                raise ValueError("No images found in images/")
 
             coverage = xml_count / img_count
             logger.info("原始覆盖率：%.2f%% (%d/%d)", coverage * 100, xml_count, img_count)

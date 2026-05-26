@@ -8,8 +8,8 @@ from odp_platform.data_pipeline import Orchestrator
 def voc_dataset():
     """构造一个最小的 VOC 数据集（3张图，3个xml）"""
     base = Path(tempfile.mkdtemp())
-    ann = base / "Annotations"
-    img = base / "JPEGImages"
+    ann = base / "annotations"
+    img = base / "images"
     ann.mkdir()
     img.mkdir()
 
@@ -66,8 +66,8 @@ def test_smoke_coverage_failfast(tmp_path):
     """测试覆盖率不足时 fail-fast"""
     raw = tmp_path / "broken_voc"
     raw.mkdir()
-    ann = raw / "Annotations"
-    img = raw / "JPEGImages"
+    ann = raw / "annotations"
+    img = raw / "images"
     ann.mkdir()
     img.mkdir()
     Image.new("RGB", (10,10)).save(img / "only.jpg")
