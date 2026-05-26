@@ -146,10 +146,18 @@ def build_snapshot(yaml_path: Path, task_type: Optional[str] = None) -> DatasetS
         images = _list_images(split_dir)
         images_tuple = tuple(images)
 
+        # 推断标签目录: "images" → "labels" (YOLO / D3 materializer 通用约定)
+        parts = list(split_dir.parts)
+        for i in range(len(parts) - 1, -1, -1):
+            if parts[i] == "images":
+                parts[i] = "labels"
+                break
+        label_dir = Path(*parts)
+
         label_paths: List[Path] = []
         img_stems = {img.stem: img for img in images}
         for stem in sorted(img_stems):
-            label_candidate = split_dir / f"{stem}.txt"
+            label_candidate = label_dir / f"{stem}.txt"
             if label_candidate.is_file():
                 label_paths.append(label_candidate)
         labels_tuple = tuple(label_paths)

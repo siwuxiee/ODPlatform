@@ -3,10 +3,12 @@
 """数据流水线编排器 (Orchestrator)"""
 
 import logging
+import os
 from pathlib import Path
 from typing import List, Optional
 
 from odp_platform.common.paths import (
+    DATA_DIR,
     TRAIN_IMAGES_DIR,
     TRAIN_LABELS_DIR,
     VAL_IMAGES_DIR,
@@ -103,8 +105,8 @@ class Orchestrator:
         logger.info("数据已落盘至全局 data/train, data/val, data/test")
 
         # 6. 生成 data.yaml（适配 ultralytics 的路径自动替换）
-        yaml_dir = self.config_yaml_path.parent   # e.g., configs/datasets/
-        path_to_data = Path("../data")             # 相对于 yaml_dir 的路径
+        yaml_dir = self.config_yaml_path.parent
+        path_to_data = Path(os.path.relpath(DATA_DIR, yaml_dir))
         writer = YamlWriter(classes=classes)
         writer.write(
             output_path=self.config_yaml_path,
