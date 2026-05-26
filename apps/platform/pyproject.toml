@@ -47,6 +47,7 @@ odp-validate = "odp_platform.cli.validate_data:main"
 # ★ D5 新增 — 直接绑到 runtime_config.generator:main, 不立 cli/ 薄包装
 odp-gen-config = "odp_platform.runtime_config.generator:main"
 odp-train     = "odp_platform.cli.train_model:main"
+odp-val       = "odp_platform.cli.val_model:main"
 
 
 # Hatchlinng配置
