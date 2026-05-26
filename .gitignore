@@ -14,3 +14,9 @@ logs/
 .vscode/
 logging/
 configs/
+
+# 临时文档
+D3-*.md
+D4-*.md
+D5-*.md
+ODPlatform_ADR.md
