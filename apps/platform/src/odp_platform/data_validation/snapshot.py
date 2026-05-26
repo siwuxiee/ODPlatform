@@ -12,6 +12,7 @@ from odp_platform.common.constants import (
     SPLIT_TEST,
     Task,
 )
+from odp_platform.common.paths import ULTRALYTICS_DATASETS_DIR
 from odp_platform.common.performance_utils import time_it
 
 logger = logging.getLogger(__name__)
@@ -96,16 +97,17 @@ def build_snapshot(yaml_path: Path, task_type: Optional[str] = None) -> DatasetS
         yaml_load_error = f"无法读取 yaml: {e}"
 
     # --- data_root ---
-    yaml_dir = yaml_path.parent
+    # path 字段的基准目录必须与 orchestrator (生成端) 和 ultralytics (训练端) 保持一致，
+    # 三者统一使用 ULTRALYTICS_DATASETS_DIR，否则一个 path 值无法同时满足验证和训练。
     raw_path = yaml_data.get("path", "")
     if raw_path:
-        candidate = (yaml_dir / raw_path).resolve()
+        candidate = (ULTRALYTICS_DATASETS_DIR / raw_path).resolve()
         if candidate.is_dir():
             data_root = candidate
         else:
-            data_root = yaml_dir
+            data_root = ULTRALYTICS_DATASETS_DIR
     else:
-        data_root = yaml_dir
+        data_root = ULTRALYTICS_DATASETS_DIR
 
     # --- nc / class_names ---
     nc: Optional[int] = None

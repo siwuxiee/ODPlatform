@@ -139,7 +139,7 @@ class TrainService:
                     raise RuntimeError(
                         f"数据集校验失败 ({error_count} 个 ERROR 级问题). "
                         f"请用 `odp-validate --dataset {data_path.stem} "
-                        f"--task {config.task}` 修复后再训练. "
+                        f"--task {config.task}` 查看详情并修复数据问题后再训练. "
                         f"如要跳过校验跑训练(不推荐), 加 --no-pre-validate."
                     )
 

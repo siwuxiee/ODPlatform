@@ -31,11 +31,15 @@ def resolve_dataset_path(data: str | Path) -> Path:
     if data_path.is_absolute():
         return data_path
 
-    # 分支 2: 仅文件名 → 查 CONFIG_DATASETS_DIR
-    config_candidate = CONFIG_DATASETS_DIR / data_path.name
-    if config_candidate.exists():
-        logger.info(f"从数据集配置目录加载: {config_candidate}")
-        return config_candidate
+    # 分支 2: 仅文件名 → 查 CONFIG_DATASETS_DIR（支持带/不带 .yaml 后缀）
+    for suffix in (data_path.suffix, ".yaml", ".yml"):
+        if not suffix:
+            continue
+        name = data_path.stem if data_path.suffix else data_path.name
+        candidate = CONFIG_DATASETS_DIR / f"{name}{suffix}"
+        if candidate.exists():
+            logger.info(f"从数据集配置目录加载: {candidate}")
+            return candidate
 
     # 分支 3: 都没命中 → 让下游报错
     logger.warning(

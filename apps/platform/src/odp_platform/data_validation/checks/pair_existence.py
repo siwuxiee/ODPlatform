@@ -52,8 +52,8 @@ def validate_pair_existence(ctx: CheckContext) -> CheckResult:
     if total_images == 0:
         return CheckResult(
             name="pair_existence",
-            severity=CheckSeverity.INFO,
-            summary="没有图像，跳过 pair_existence",
+            severity=CheckSeverity.WARNING,
+            summary="没有图像，请检查数据集 YAML 的 path 字段是否正确指向数据目录",
             details={"total_images": 0, "total_missing": 0, "missing_ratio": 0.0},
         )
 

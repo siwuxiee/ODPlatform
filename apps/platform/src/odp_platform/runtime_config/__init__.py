@@ -112,8 +112,11 @@ def build_train_config(
     """
     from odp_platform.common.paths import RUNTIME_CONFIGS_DIR
 
+    # None → 用函数签名默认值 (CLI 层不持有默认文件名, D5 是 SSoT)
+    _yaml_path = yaml_path or "train.yaml"
+
     sources = load_all_sources(
-        yaml_path   = yaml_path,
+        yaml_path   = _yaml_path,
         yaml_dir    = yaml_dir or RUNTIME_CONFIGS_DIR,
         cli_args    = cli_args,
         cli_exclude = cli_exclude,
