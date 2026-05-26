@@ -19,10 +19,13 @@ from __future__ import annotations
 
 import json
 import logging
+import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+import yaml
 
 from ultralytics import YOLO
 
@@ -30,7 +33,7 @@ from odp_platform.common.config_log import log_effective_config, log_override_ch
 from odp_platform.common.dataset_path import resolve_dataset_path
 from odp_platform.common.log_rename import rename_log_to_save_dir, add_model_to_log_name
 from odp_platform.common.model_path import resolve_model_path
-from odp_platform.common.paths import RUNS_DIR
+from odp_platform.common.paths import DATA_DIR, RUNS_DIR
 from odp_platform.common.result import TrainMetrics, log_train_metrics
 from odp_platform.common.system_utils import log_device_info
 from odp_platform.data_validation import render_to_logger, validate_dataset
@@ -155,9 +158,22 @@ class TrainService:
             # ============================================================
             # 阶段 5: 执行训练 (ultralytics)
             # ============================================================
+            # YAML 的 path 是相对路径 (跨环境可移植)，但 ultralytics 用自己的
+            # DATASETS_DIR 解析它，不同机器这个值可能不同。在内存里把 path 替换为
+            # 本机绝对路径写入临时文件传给 ultralytics，源 YAML 不受影响。
+            with open(data_path, encoding="utf-8") as f:
+                ds_yaml = yaml.safe_load(f)
+            ds_yaml["path"] = str(DATA_DIR.resolve())
+            tmp_yaml = tempfile.NamedTemporaryFile(
+                mode="w", suffix=".yaml", delete=False, encoding="utf-8"
+            )
+            yaml.safe_dump(ds_yaml, tmp_yaml, allow_unicode=True)
+            tmp_yaml.close()
+
             yolo_kwargs = config.to_ultralytics_kwargs()
-            # 用解析后的绝对路径覆盖 — 防 ultralytics 拿相对名在 cwd 找不到
-            yolo_kwargs["data"] = str(data_path)
+            yolo_kwargs["data"] = tmp_yaml.name
+            # 覆盖为本地绝对路径，防止 ultralytics 对非官方模型名触发 GitHub 下载
+            yolo_kwargs["model"] = str(model_path)
             # 用户没指定 project 时, 走 RUNS_DIR/<task>_train/ 作为输出根
             yolo_kwargs.setdefault("project", str(RUNS_DIR / f"{config.task}_train"))
 
