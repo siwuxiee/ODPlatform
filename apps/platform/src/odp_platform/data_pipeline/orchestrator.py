@@ -9,6 +9,7 @@ from typing import List, Optional
 
 from odp_platform.common.paths import (
     DATA_DIR,
+    ULTRALYTICS_DATASETS_DIR,
     TRAIN_IMAGES_DIR,
     TRAIN_LABELS_DIR,
     VAL_IMAGES_DIR,
@@ -104,9 +105,8 @@ class Orchestrator:
         materializer.materialize(train_pairs, val_pairs, test_pairs)
         logger.info("数据已落盘至全局 data/train, data/val, data/test")
 
-        # 6. 生成 data.yaml（适配 ultralytics 的路径自动替换）
-        yaml_dir = self.config_yaml_path.parent
-        path_to_data = Path(os.path.relpath(DATA_DIR, yaml_dir))
+        # 6. 生成 data.yaml（path 从 ultralytics 的 DATASETS_DIR 做基准算，保证跨环境一致）
+        path_to_data = Path(os.path.relpath(DATA_DIR, ULTRALYTICS_DATASETS_DIR))
         writer = YamlWriter(classes=classes)
         writer.write(
             output_path=self.config_yaml_path,

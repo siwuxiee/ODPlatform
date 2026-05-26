@@ -83,6 +83,10 @@ DATA_RAW_DIR: Path = DATA_DIR / "raw"
 DATA_PROCESSED_DIR: Path = DATA_DIR / "processed"
 CONFIG_DATASETS_DIR: Path = CONFIGS_DIR / "datasets"
 
+# ultralytics 数据集的基准目录 — YAML 中的 path 字段由 ultralytics 从此目录解析
+# 见 ultralytics.data.utils.check_det_dataset: path = (DATASETS_DIR / path).resolve()
+ULTRALYTICS_DATASETS_DIR: Path = APP_DIR / "datasets"
+
 # --- D4 新增：data_validation 相关路径 ---
 VALIDATION_RUNS_DIR: Path = RUNS_DIR / "data_validation"
 
