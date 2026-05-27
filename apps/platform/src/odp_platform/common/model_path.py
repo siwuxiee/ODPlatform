@@ -33,7 +33,12 @@ def resolve_model_path(
     if model_path.is_absolute():
         return model_path
 
-    # 分支 2: 仅文件名 → 按顺序查 search_dirs
+    # 分支 2: 相对路径且文件存在 → 直接返回 (e.g. runs/detect_train/train/weights/best.pt)
+    if model_path.exists():
+        logger.info(f"模型已定位: {model_path.resolve()}")
+        return model_path
+
+    # 分支 3: 仅文件名 → 按顺序查 search_dirs
     dirs: Sequence[Path] = search_dirs if search_dirs is not None else [PRETRAINED_MODELS_DIR]
     for d in dirs:
         candidate = d / model_path.name
@@ -41,7 +46,7 @@ def resolve_model_path(
             logger.info(f"模型已定位: {candidate} (来自 {d})")
             return candidate
 
-    # 分支 3: fallback — 让 ultralytics 自己处理
+    # 分支 4: fallback — 让 ultralytics 自己处理
     logger.warning(
         f"模型文件未在任何搜索目录命中: {model_path.name}\n"
         f"  搜索过的目录: {[str(d) for d in dirs]}\n"
