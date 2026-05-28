@@ -193,7 +193,7 @@ class _Renderer(Thread):
                     image=frame.image,
                     annotated=annotated,
                     n_detections=n,
-                    detections=None,    # 简化: 默认不打包 detections, 业务方真要再加
+                    detections=[{"label": lbl} for lbl in labels],
                 ))
             self._frame_idx += 1
 

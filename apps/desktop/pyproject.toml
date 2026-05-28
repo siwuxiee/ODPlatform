@@ -1,0 +1,33 @@
+[project]
+name = "odp-desktop"
+dynamic = ["version"]
+description = "ODPlatform PySide6 桌面推理客户端"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "odp-platform",
+    "pyside6>=6.5.0",
+    "opencv-python>=4.8.0",
+    "numpy>=1.24.0",
+
+]
+
+[project.scripts]
+odp-desktop = "odp_desktop.main:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.1.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/odp_desktop"]
+
+[tool.hatch.version]
+path = "src/odp_desktop/_version.py"
