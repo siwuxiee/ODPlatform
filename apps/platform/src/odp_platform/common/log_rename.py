@@ -88,6 +88,61 @@ def add_model_to_log_name(model_stem: str) -> Path | None:
     return new_path
 
 
+def rename_log_early(save_dir_name: str, model_stem: str) -> Path | None:
+    """训练开始前把日志命名为最终格式: <save_dir>_<timestamp>_<model>.log.
+
+    从 FileHandler 当前文件名提取时间戳, 用预测的 save_dir 名称和 model_stem
+    构造最终文件名并 rename + 重建 handler. 这样无论训练后续成功或失败/中断,
+    日志文件名都保持一致.
+    """
+    root = logging.getLogger(ROOT_LOGGER_NAME)
+    file_handler = next(
+        (h for h in root.handlers if isinstance(h, logging.FileHandler)),
+        None,
+    )
+    if file_handler is None:
+        return None
+
+    old_path = Path(file_handler.baseFilename)
+
+    match = _TIMESTAMP_RE.search(old_path.stem)
+    timestamp = match.group(1) if match else "unknown-time"
+
+    safe_model = "".join(c if c.isalnum() or c in "_-" else "_" for c in model_stem)
+    new_name = f"{save_dir_name}_{timestamp}_{safe_model}.log"
+    new_path = old_path.parent / new_name
+
+    if new_path == old_path:
+        return old_path
+
+    formatter = file_handler.formatter
+    level = file_handler.level
+    encoding = getattr(file_handler, "encoding", None) or "utf-8"
+
+    file_handler.close()
+    root.removeHandler(file_handler)
+
+    try:
+        old_path.rename(new_path)
+    except OSError as e:
+        logger.warning(f"日志早期改名失败 ({e}), 回退")
+        restored = logging.FileHandler(old_path, encoding=encoding)
+        if formatter:
+            restored.setFormatter(formatter)
+        restored.setLevel(level)
+        root.addHandler(restored)
+        return None
+
+    new_handler = logging.FileHandler(new_path, encoding=encoding)
+    if formatter:
+        new_handler.setFormatter(formatter)
+    new_handler.setLevel(level)
+    root.addHandler(new_handler)
+
+    logger.info(f"日志文件已命名: {new_path.name}")
+    return new_path
+
+
 def rename_log_to_save_dir(
     save_dir: Path,
     model_stem: str,

@@ -31,7 +31,7 @@ from ultralytics import YOLO
 
 from odp_platform.common.config_log import log_effective_config, log_override_chains
 from odp_platform.common.dataset_path import resolve_dataset_path
-from odp_platform.common.log_rename import rename_log_to_save_dir, add_model_to_log_name
+from odp_platform.common.log_rename import rename_log_early, rename_log_to_save_dir
 from odp_platform.common.model_path import resolve_model_path
 from odp_platform.common.paths import DATA_DIR, RUNS_DIR
 from odp_platform.common.result import TrainMetrics, log_train_metrics
@@ -68,6 +68,26 @@ class TrainResult:
     error:       str | None = None
     audit_path:  Path | None = None
     log_path:    Path | None = None
+
+
+def _predict_save_dir(project: Path, name: str | None, exist_ok: bool) -> str:
+    """预测 ultralytics 将使用的 save_dir 名称 (只扫描, 不改文件系统).
+
+    复刻 increment_path(project/name, exist_ok=exist_ok) 行为:
+      - 首次运行 → "train"
+      - 第二次 → "train-2", 第三次 → "train-3", ...
+      - exist_ok=True → 直接返回 base name, 不递增
+    """
+    base = name or "train"
+    if exist_ok:
+        return base
+    save_dir = project / base
+    if not save_dir.exists():
+        return base
+    n = 2
+    while (project / f"{base}-{n}").exists():
+        n += 1
+    return f"{base}-{n}"
 
 
 class TrainService:
@@ -117,9 +137,17 @@ class TrainService:
             model_path = resolve_model_path(raw_model)
             logger.info(f"模型(解析):  {model_path}")
 
-            # 立刻把模型名写入日志文件名 — 即使后续训练失败也能识别这份日志属于哪个模型
+            # 立刻把日志重命名为最终格式 — 即使训练中断/失败也保持一致命名
             model_stem = Path(raw_model).stem
-            add_model_to_log_name(model_stem)
+            if rename_log:
+                project_dir = (
+                    Path(config.project) if config.project
+                    else RUNS_DIR / f"{config.task}_train"
+                )
+                save_dir_name = _predict_save_dir(
+                    project_dir, config.name, config.exist_ok
+                )
+                rename_log_early(save_dir_name, model_stem)
 
             # D2 系统快照
             log_device_info(logger)
