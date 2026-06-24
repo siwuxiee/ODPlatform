@@ -21,3 +21,7 @@ D4-*.md
 D5-*.md
 ODPlatform_ADR.md
 D6-*.md
+
+.gitignore
+yolo11n.pt
+XDUTL*
